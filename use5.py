@@ -47,7 +47,9 @@ class Panier:
         # concaténer les deux listes d'articles
         nouveau_panier.panier = self.panier + autre_panier.panier
         return nouveau_panier
-
+    
+    def __len__(self):
+        return len(self.panier)
 
 class Menu:
     def __init__(self):
@@ -73,27 +75,44 @@ class Menu:
                         print("Panier 1 créé.")
                     case "2":
                         panier2 = Panier()
-                        print("Panier 1 créé.")
+                        print("Panier 2 créé.")
                     case "3":
                         nom = input("Nom : ")
                         prix = input("Prix : ")
                         typeAccessoire = input("typeAccessoire : ")
                         accessoire = Accessoire(nom, prix, typeAccessoire)
-                        accessoire.presenter()
-                        panier1.content_panier(accessoire)
+                        print("1. Panier1\n2. Panier2")
+                        choix = input("Tu veux l'enregistrer dans quel panier : ")
+                        if choix == "1" and panier1 is not None:
+                            accessoire.presenter()
+                            panier1.content_panier(accessoire)
+                        elif choix == "2" and panier2 is not None:
+                            accessoire.presenter()
+                            panier2.content_panier(accessoire)
+                        else:
+                            raise ValueError("Impossible d'enregistrer l'article dans le panier")
                     case "4":
                         nom = input("Nom : ")
                         prix = input("Prix : ")
                         modele = input("modele : ")
                         mod = Coque(nom, prix, modele)
-                        mod.presenter()
-                        panier2.content_panier(mod)
+                        print("1. Panier1 \n 2. Panier2")
+                        choix = input("Tu veux l'enregistrer dans quel panier : ")
+                        if choix == "1" and panier1 is not None:
+                            mod.presenter()
+                            panier1.content_panier(mod)
+                        elif choix == "2" and panier2 is not None:
+                            mod.presenter()
+                            panier2.content_panier(mod)
+                        else:
+                            raise ValueError("Impossible d'enregistrer l'article dans le panier")
                     case "5":
-                        if not panier1 or not panier2:
+                        if panier1 is None or panier2 is None:
                             print("Créez d'abord les deux paniers (options 1 et 2).")
                             continue
-                        self.total_panier = panier1 + panier2
-                        print(f"Les paniers ont été fusionnés. Avec {len(self.total_panier.panier)} article")
+                        else:
+                            self.total_panier = panier1 + panier2
+                        print(f"Les paniers ont été fusionnés. Avec {len(self.total_panier)} article")
 
                     case _:
                         exit()
